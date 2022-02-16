@@ -9,7 +9,9 @@ namespace Wordle
         string Theme;
         Bitmap canvas;
         Graphics g;
+        bool End = false;
         int NowBlock = 0;
+
         public Form1()
         {
             InitializeComponent();
@@ -72,6 +74,7 @@ namespace Wordle
         int keycount = 0;
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
+            if (End == true) return;
             Font fnt = new("MS UI Gothic", 30);
 
             //BackSpaceの時
@@ -97,14 +100,13 @@ namespace Wordle
                         g.FillRectangle(Brushes.Orange, greenreference);
                         g.DrawString(Blocks[(NowBlock * 5) + i].Text, fnt, Brushes.White, Blocks[(NowBlock * 5) + i].X, Blocks[(NowBlock * 5) + i].Y);
                         pictureBox1.Image = canvas;
-
                     }
                 }
 
                 //位置があってるか
                 for (int i = 0; i < 5; i++)
                 {
-                    string anser = Blocks[(NowBlock * 5) + i].Text; // 答え
+                    string anser = Blocks[(NowBlock * 5) + i].Text;
                     if (ARTheme[i].Equals(anser))
                     {
                         //緑にする
@@ -112,7 +114,6 @@ namespace Wordle
                         g.FillRectangle(Brushes.Green, greenreference);
                         g.DrawString(Blocks[(NowBlock * 5) + i].Text, fnt, Brushes.White, Blocks[(NowBlock * 5) + i].X, Blocks[(NowBlock * 5) + i].Y);
                         pictureBox1.Image = canvas;
-                        
                     }
                 }
 
@@ -121,10 +122,10 @@ namespace Wordle
                 if (NowBlock == 6)
                 {
                     Debug.WriteLine("End");
+                    End = true;
                     Ending();
                     return;
                 }
-
                 //矢印消して改行する
                 Rectangle reference = new(Blocks[0].X - 50, Blocks[keycount - 4].Y, 47, 40);
                 g.FillRectangle(Brushes.Black, reference);
@@ -150,7 +151,7 @@ namespace Wordle
 
         public void Ending()
         {
-
+            MessageBox.Show("答えは " + Theme + " でした！", "答え発表！！");
         }
 
         public int GetSideBlock(int count)
