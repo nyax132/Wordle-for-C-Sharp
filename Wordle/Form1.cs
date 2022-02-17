@@ -5,12 +5,12 @@ namespace Wordle
     public partial class Form1 : Form
     {
         Dictionary<int, BlockInfomation> Blocks = new();
-        string[] ARTheme = new string[5];
-        string Theme;
         Bitmap canvas;
         Graphics g;
+        string[] ARTheme = new string[5];
+        string Theme;
         bool End = false;
-        int NowBlock = 0;
+        int NowBlock = 0; //‰¡Ž²‚Ì‚±‚Æ
 
         public Form1()
         {
@@ -23,6 +23,7 @@ namespace Wordle
             {
                 ARTheme[i] = Theme[i].ToString();
             }
+
             DrawLabelBox();
         }
 
@@ -90,9 +91,9 @@ namespace Wordle
             //Enter‚ÌŽž
             if (e.KeyCode == Keys.Enter && (Blocks[NowBlock * 5].SideBlock * 5) + 5 == keycount)
             {
-                //•¶Žš‚ª“š‚¦‚É‚ ‚é‚©
                 for (int i = 0; i < 5; i++)
-                {
+                {   
+                    //•¶Žš‚ª“š‚¦‚É‚ ‚é‚©
                     if (Theme.Contains(Blocks[(NowBlock * 5) + i].Text))
                     {
                         //‰©F‚É‚·‚é
@@ -101,11 +102,8 @@ namespace Wordle
                         g.DrawString(Blocks[(NowBlock * 5) + i].Text, fnt, Brushes.White, Blocks[(NowBlock * 5) + i].X, Blocks[(NowBlock * 5) + i].Y);
                         pictureBox1.Image = canvas;
                     }
-                }
 
-                //ˆÊ’u‚ª‚ ‚Á‚Ä‚é‚©
-                for (int i = 0; i < 5; i++)
-                {
+                    //ˆÊ’u‚ª‚ ‚Á‚Ä‚é‚©
                     string anser = Blocks[(NowBlock * 5) + i].Text;
                     if (ARTheme[i].Equals(anser))
                     {
@@ -118,7 +116,7 @@ namespace Wordle
                 }
 
                 NowBlock++;
-                Debug.WriteLine("Enter -- NowBlock++");
+                Debug.WriteLine("NowBlock++ : " + NowBlock);
                 if (NowBlock == 6)
                 {
                     Debug.WriteLine("End");
@@ -126,12 +124,11 @@ namespace Wordle
                     Ending();
                     return;
                 }
-                //–îˆóÁ‚µ‚Ä‰üs‚·‚é
+                //–îˆóÁ‚·
                 Rectangle reference = new(Blocks[0].X - 50, Blocks[keycount - 4].Y, 47, 40);
                 g.FillRectangle(Brushes.Black, reference);
                 g.DrawString("¨", fnt, Brushes.White, Blocks[0].X - 50, Blocks[keycount].Y);
                 pictureBox1.Image = canvas;
-
                 return;
             }
 
@@ -142,6 +139,7 @@ namespace Wordle
             //s‚ð”ò‚Ñ‰z‚¦‚Ä“ü—Í‚Å‚«‚È‚¢‚æ‚¤‚É‚·‚é
             if ((Blocks[NowBlock * 5].SideBlock * 5) + 4 < keycount) return;
 
+            //“ü—Í‚µ‚½•¶Žš‚ð‹L˜^‚µ‚Ä•`‰æ
             Blocks[keycount].Text = e.KeyCode.ToString();
             g.DrawString(e.KeyCode.ToString(), fnt, Brushes.White, Blocks[keycount].X, Blocks[keycount].Y);
             fnt.Dispose();
